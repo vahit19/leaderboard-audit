@@ -21,3 +21,5 @@ run_smoke2/
 run_gsm8k_numeric/results.jsonl
 run_gsm8k_judge/results.jsonl
 run_gsm8k_*/errors.jsonl
+run_j_*/results.jsonl
+run_j_*/errors.jsonl

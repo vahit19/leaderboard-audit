@@ -1,0 +1,150 @@
+{
+  "bias_spread": 0.035,
+  "candidate_name": "scores.csv",
+  "n_items": 200,
+  "n_systems": 6,
+  "overall_agreement": 0.9891666666666666,
+  "per_system": [
+    {
+      "bias": -0.01,
+      "biased": false,
+      "candidate_score": 0.94,
+      "ci_high": 0.0,
+      "ci_low": -0.025,
+      "cliffs_delta": -0.01,
+      "comparison": "meta-llama/llama-3.3-70b-instruct",
+      "disagreement_rate": 0.01,
+      "holm_p": 1.0,
+      "method": "exact",
+      "n_pairs": 2,
+      "p_floor": 0.5,
+      "p_value": 0.5,
+      "reference_score": 0.95,
+      "system": "meta-llama/llama-3.3-70b-instruct",
+      "too_generous": 0,
+      "too_harsh": 2
+    },
+    {
+      "bias": 0.0,
+      "biased": false,
+      "candidate_score": 0.935,
+      "ci_high": 0.0,
+      "ci_low": 0.0,
+      "cliffs_delta": 0.0,
+      "comparison": "openai/gpt-4.1-nano",
+      "disagreement_rate": 0.0,
+      "holm_p": 1.0,
+      "method": "degenerate",
+      "n_pairs": 0,
+      "p_floor": 1.0,
+      "p_value": 1.0,
+      "reference_score": 0.935,
+      "system": "openai/gpt-4.1-nano",
+      "too_generous": 0,
+      "too_harsh": 0
+    },
+    {
+      "bias": 0.0,
+      "biased": false,
+      "candidate_score": 0.945,
+      "ci_high": 0.0,
+      "ci_low": 0.0,
+      "cliffs_delta": 0.0,
+      "comparison": "openai/gpt-4o-mini",
+      "disagreement_rate": 0.0,
+      "holm_p": 1.0,
+      "method": "degenerate",
+      "n_pairs": 0,
+      "p_floor": 1.0,
+      "p_value": 1.0,
+      "reference_score": 0.945,
+      "system": "openai/gpt-4o-mini",
+      "too_generous": 0,
+      "too_harsh": 0
+    },
+    {
+      "bias": 0.005,
+      "biased": false,
+      "candidate_score": 0.94,
+      "ci_high": 0.015,
+      "ci_low": 0.0,
+      "cliffs_delta": 0.005,
+      "comparison": "mistralai/ministral-8b-2512",
+      "disagreement_rate": 0.005,
+      "holm_p": 1.0,
+      "method": "exact",
+      "n_pairs": 1,
+      "p_floor": 1.0,
+      "p_value": 1.0,
+      "reference_score": 0.935,
+      "system": "mistralai/ministral-8b-2512",
+      "too_generous": 1,
+      "too_harsh": 0
+    },
+    {
+      "bias": 0.015,
+      "biased": false,
+      "candidate_score": 0.855,
+      "ci_high": 0.04,
+      "ci_low": -0.005,
+      "cliffs_delta": 0.015,
+      "comparison": "meta-llama/llama-3.1-8b-instruct",
+      "disagreement_rate": 0.025,
+      "holm_p": 1.0,
+      "method": "exact",
+      "n_pairs": 5,
+      "p_floor": 0.0625,
+      "p_value": 0.375,
+      "reference_score": 0.84,
+      "system": "meta-llama/llama-3.1-8b-instruct",
+      "too_generous": 4,
+      "too_harsh": 1
+    },
+    {
+      "bias": 0.025,
+      "biased": false,
+      "candidate_score": 0.92,
+      "ci_high": 0.05,
+      "ci_low": 0.005,
+      "cliffs_delta": 0.025,
+      "comparison": "qwen/qwen-2.5-7b-instruct",
+      "disagreement_rate": 0.025,
+      "holm_p": 0.375,
+      "method": "exact",
+      "n_pairs": 5,
+      "p_floor": 0.0625,
+      "p_value": 0.0625,
+      "reference_score": 0.895,
+      "system": "qwen/qwen-2.5-7b-instruct",
+      "too_generous": 5,
+      "too_harsh": 0
+    }
+  ],
+  "ranking": {
+    "inversions": [
+      {
+        "candidate_better": "openai/gpt-4o-mini",
+        "reference_better": "meta-llama/llama-3.3-70b-instruct"
+      }
+    ],
+    "moved": [
+      {
+        "candidate_rank": 2,
+        "moved": 1,
+        "reference_rank": 1,
+        "system": "meta-llama/llama-3.3-70b-instruct"
+      },
+      {
+        "candidate_rank": 1,
+        "moved": -1,
+        "reference_rank": 2,
+        "system": "openai/gpt-4o-mini"
+      }
+    ],
+    "n_inversions": 1,
+    "n_moved": 2,
+    "top_changed": true
+  },
+  "reference_name": "scores.csv",
+  "verdict": "overall agreement 98.9%; but the grader's error is not even across systems: it spans 3.5 points between the system it treats best and the one it treats worst; and the two graders disagree on the order of 1 pair(s); including which system is first. On a saturated benchmark, a bias spread larger than the real gaps between systems is enough to reorder the table, and no amount of repeat grading would reveal it -- every repeat is wrong in the same direction."
+}

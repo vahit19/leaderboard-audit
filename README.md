@@ -17,8 +17,9 @@ statistical test is implemented here and checked against hand-computed values.
 
 ## A verified result
 
-Not a simulation. Six real models, 200 real GSM8K items, graded two ways, for
-$0.30 of API spend. Every number below came out of this repository.
+Not a simulation. Six real models, 200 real GSM8K items, graded four ways --
+once deterministically and once by each of three judges from three labs -- for
+$0.49 of API spend. Every number below came out of this repository.
 
 **Graded deterministically** — take the final number in the answer, compare it
 to the reference:
@@ -56,34 +57,65 @@ meta-llama/llama-3.1-8b-instruct   0.827  6     6
 
 **The first-place model fell to fifth.** Same answers. Only the grader changed.
 
-### Why no amount of repeat grading would have caught this
+### Three judges, four different answers
 
-The judge is not flaky. Graded three times at temperature 0, it gave the same
-verdict on **98.3%** of answers, and every one of its 3,592 replies followed
-the required output format. Overall it agreed with ground truth **93.1%** of
-the time. By every check an evaluation normally runs, this judge is fine.
-
-`la compare` puts the two graders side by side on the same answers:
+The obvious next question is whether that is a property of the model's output
+or of the judge. So the same 200 answers were graded again by two more judges
+from other labs, for another $0.18:
 
 ```
-system                             truth  judge  bias    too_generous  too_harsh  holm_p
----------------------------------  -----  -----  ------  ------------  ---------  ------
-meta-llama/llama-3.3-70b-instruct  0.950  0.889  -0.060  1             13         0.005
-openai/gpt-4.1-nano                0.935  0.915  -0.020  2             6          1.000
-meta-llama/llama-3.1-8b-instruct   0.839  0.827  -0.012  9             10         1.000
-mistralai/ministral-8b-2512        0.935  0.930  -0.005  6             6          1.000
-openai/gpt-4o-mini                 0.945  0.943  -0.002  6             6          1.000
-qwen/qwen-2.5-7b-instruct          0.894  0.936  +0.042  13            4          0.245
+                    truth   gpt-4o-mini   gemini-flash-lite   claude-3-haiku
+llama-3.3-70b         1st       5th             2nd               4th
 ```
 
-The judge's error is not spread evenly. It is **6.0 points harsh** to one model
-and **4.2 points generous** to another — a 10.2-point spread, on a benchmark
-where the real gaps between the top five are one to five points. Six pairwise
-orderings flip, including first place.
+**Same answers, same items, four different verdicts on who is best.** The
+penalty against llama-3.3-70b belongs to one judge, not to the answers:
 
-That is bias, not noise, and the distinction is the whole point: **every repeat
+```
+system             gpt-4o-mini   gemini-flash-lite   claude-3-haiku
+llama-3.1-8b          -0.005          +0.015            +0.135
+llama-3.3-70b         -0.060          -0.010            +0.045
+ministral-8b          +0.000          +0.005            +0.065
+gpt-4.1-nano          -0.020          +0.000            +0.065
+gpt-4o-mini           +0.000          +0.000            +0.055
+qwen-2.5-7b           +0.045          +0.025            +0.100
+
+bias spread            0.105           0.035             0.090
+agreement              93.1%           98.9%             92.2%
+```
+
+Each judge is wrong in its own shape. `gpt-4o-mini` is harsh to one model and
+generous to another. `claude-3-haiku` is generous to everyone — and most
+generous to the weakest model, which compresses the very gap the benchmark is
+there to measure. `gemini-2.5-flash-lite`, the cheapest of the three, is by
+some distance the most accurate.
+
+That last point is the practical one: **which judge you pick moves the table
+more than which models you are comparing.** And you can find out which judge to
+trust, cheaply, whenever any deterministic ground truth exists.
+
+### Why repeat grading would not have caught any of this
+
+None of these judges is flaky. Graded three times at temperature 0,
+`gpt-4o-mini` gave the same verdict on **98.3%** of answers, and every one of
+its 3,592 replies followed the required output format. By every check an
+evaluation normally runs, it is fine.
+
+This is bias, not noise, and the distinction is the whole point: **every repeat
 is wrong in the same direction**, so repeat grading confirms it instead of
-revealing it. Only a second, independent grader on the same answers exposes it.
+revealing it. Only a second grader on the same answers exposes it.
+
+A check worth doing before believing any of the above: all 13 answers that
+`gpt-4o-mini` marked wrong and the numeric scorer marked right were read by
+hand. Every one ends with the correct value stated plainly — "The final answer
+is: 2" against a reference of 2. The extractor is right and the judge is wrong,
+not the other way round.
+
+A plausible mechanism was tested and rejected. Verbosity does not explain it:
+across the six systems, longer answers were graded *more* generously, not less,
+and llama-3.3-70b is among the shortest. With six systems nothing at the model
+level is establishable anyway. The bias is measured; its mechanism is not
+explained here.
 
 Reproduce the analysis from the shipped tables:
 
@@ -91,6 +123,8 @@ Reproduce the analysis from the shipped tables:
 la audit   run_gsm8k_numeric/scores.csv
 la audit   run_gsm8k_judge/scores.csv
 la compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv
+la compare run_gsm8k_numeric/scores.csv run_j_gemini-2.5-flash-lite/scores.csv
+la compare run_gsm8k_numeric/scores.csv run_j_claude-3-haiku/scores.csv
 ```
 
 ---
