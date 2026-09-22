@@ -1,135 +1,78 @@
 # leaderboard-audit
 
-Run an evaluation, then find out what its ordering actually supports.
+**Your eval says the new model is better. Can it tell?**
+
+Six models. 200 GSM8K problems. Every answer graded four ways — once against
+ground truth, once by each of three LLM judges. $0.49 of API spend. The model
+that ranks 1st ranks 5th, depending only on who grades.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/ranks-by-grader-dark.png">
+  <img alt="Rank of each model under four different graders. llama-3.3-70b goes from 1st on ground truth to 5th under gpt-4o-mini." src="figures/ranks-by-grader-light.png">
+</picture>
 
 ```
-python demo.py                  # full pipeline offline: no key, no spend
-python tests/test_stats.py      # 24 tests
-python tests/test_audit.py      # 26 tests
-python tests/test_system.py     # 46 tests
-python tests/test_compare.py    # 13 tests
+python demo.py     # full pipeline offline: no key, no spend
 ```
 
-`numpy` is the only requirement for everything except a live run. Every
+`numpy` is the only requirement for everything but a live run. Every
 statistical test is implemented here and checked against hand-computed values.
 
 ---
 
-## A verified result
+## The finding
 
-Not a simulation. Six real models, 200 real GSM8K items, graded four ways --
-once deterministically and once by each of three judges from three labs -- for
-$0.49 of API spend. Every number below came out of this repository.
+**The judges are not flaky.** Graded three times at temperature 0,
+`gpt-4o-mini` returned the same verdict on **98.3%** of answers; all 3,592 of
+its replies followed the required format; it agreed with ground truth **93.1%**
+of the time. By every check an evaluation normally runs, it is healthy.
 
-**Graded deterministically** — take the final number in the answer, compare it
-to the reference:
+Its error is simply not spread evenly across systems.
 
-```
-6 systems, 2 distinguishable tiers: 4 of the 5 rank gaps are not supported.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/grader-bias-dark.png">
+  <img alt="Per-system grading bias for three judges. Each judge has a different pattern of harshness and generosity." src="figures/grader-bias-light.png">
+</picture>
 
-system                             score  rank  rank_95%  tier
----------------------------------  -----  ----  --------  ----
-meta-llama/llama-3.3-70b-instruct  0.950  1     1-4       1
-openai/gpt-4o-mini                 0.945  2     1-4       1
-mistralai/ministral-8b-2512        0.935  3     1-4       1
-openai/gpt-4.1-nano                0.935  3     1-5       1
-qwen/qwen-2.5-7b-instruct          0.895  5     4-5       1
-meta-llama/llama-3.1-8b-instruct   0.840  6     6-6       2
-```
+`gpt-4o-mini` is 6.0 points harsh to one model and 4.2 generous to another
+(Holm-corrected *p* = .005 on the first) — a 10.2-point spread, on a benchmark
+where the real gaps between the top five are one to five points.
+`claude-3-haiku` is generous to everyone and most generous to the weakest
+model, compressing the very gap the benchmark exists to measure.
+`gemini-2.5-flash-lite`, the cheapest of the three, is by some distance the
+most accurate.
 
-Five of six models span 89.5% to 95.0% and **none of those five can be told
-apart** at 200 items. At this size the table cannot see differences below 5.6
-points; separating the closest pair would take about 6,300 items.
+**This is bias, not noise, and that is the whole point.** Every repeat is wrong
+in the same direction, so repeat grading confirms it rather than revealing it.
+Only a second grader on the same answers exposes it.
 
-**Then the same answers, graded by a model judge, three times each.** The
-answers came from cache, so only the grading was paid for:
+And on the deterministic table, five of the six models — spanning 89.5% to
+95.0% — **cannot be told apart at all** at 200 items. The audit reports two
+tiers, not six ranks.
 
-```
-system                             score  rank  ← was
----------------------------------  -----  ----  -----
-openai/gpt-4o-mini                 0.943  1     2
-qwen/qwen-2.5-7b-instruct          0.936  2     5
-mistralai/ministral-8b-2512        0.930  3     3
-openai/gpt-4.1-nano                0.915  4     3
-meta-llama/llama-3.3-70b-instruct  0.889  5     1
-meta-llama/llama-3.1-8b-instruct   0.827  6     6
-```
+<details>
+<summary>Checks run before believing any of this</summary>
 
-**The first-place model fell to fifth.** Same answers. Only the grader changed.
+- All 13 answers `gpt-4o-mini` marked wrong and the numeric scorer marked right
+  were **read by hand**. Every one ends with the correct value stated plainly
+  ("The final answer is: 2" against a reference of 2). The extractor is right
+  and the judge is wrong, not the other way round.
+- A verbosity mechanism was **tested and rejected**: longer answers were graded
+  *more* generously, and llama-3.3-70b is among the shortest. With six systems
+  nothing at the model level is establishable anyway. The bias is measured; its
+  mechanism is not explained here.
+- `gpt-4o-mini` appears as both a system and a judge, so its own column is
+  self-graded. It rises to 1st under all three judges, including the two from
+  other labs, so this does not explain the pattern — but it is a confound and
+  is named rather than buried.
+- 200 items, six systems, one benchmark, one task type. Nothing here
+  generalises beyond that without more runs.
 
-### Three judges, four different answers
-
-The obvious next question is whether that is a property of the model's output
-or of the judge. So the same 200 answers were graded again by two more judges
-from other labs, for another $0.18:
-
-```
-                    truth   gpt-4o-mini   gemini-flash-lite   claude-3-haiku
-llama-3.3-70b         1st       5th             2nd               4th
-```
-
-**Same answers, same items, four different verdicts on who is best.** The
-penalty against llama-3.3-70b belongs to one judge, not to the answers:
-
-```
-system             gpt-4o-mini   gemini-flash-lite   claude-3-haiku
-llama-3.1-8b          -0.005          +0.015            +0.135
-llama-3.3-70b         -0.060          -0.010            +0.045
-ministral-8b          +0.000          +0.005            +0.065
-gpt-4.1-nano          -0.020          +0.000            +0.065
-gpt-4o-mini           +0.000          +0.000            +0.055
-qwen-2.5-7b           +0.045          +0.025            +0.100
-
-bias spread            0.105           0.035             0.090
-agreement              93.1%           98.9%             92.2%
-```
-
-Each judge is wrong in its own shape. `gpt-4o-mini` is harsh to one model and
-generous to another. `claude-3-haiku` is generous to everyone — and most
-generous to the weakest model, which compresses the very gap the benchmark is
-there to measure. `gemini-2.5-flash-lite`, the cheapest of the three, is by
-some distance the most accurate.
-
-That last point is the practical one: **which judge you pick moves the table
-more than which models you are comparing.** And you can find out which judge to
-trust, cheaply, whenever any deterministic ground truth exists.
-
-### Why repeat grading would not have caught any of this
-
-None of these judges is flaky. Graded three times at temperature 0,
-`gpt-4o-mini` gave the same verdict on **98.3%** of answers, and every one of
-its 3,592 replies followed the required output format. By every check an
-evaluation normally runs, it is fine.
-
-This is bias, not noise, and the distinction is the whole point: **every repeat
-is wrong in the same direction**, so repeat grading confirms it instead of
-revealing it. Only a second grader on the same answers exposes it.
-
-A check worth doing before believing any of the above: all 13 answers that
-`gpt-4o-mini` marked wrong and the numeric scorer marked right were read by
-hand. Every one ends with the correct value stated plainly — "The final answer
-is: 2" against a reference of 2. The extractor is right and the judge is wrong,
-not the other way round.
-
-A plausible mechanism was tested and rejected. Verbosity does not explain it:
-across the six systems, longer answers were graded *more* generously, not less,
-and llama-3.3-70b is among the shortest. With six systems nothing at the model
-level is establishable anyway. The bias is measured; its mechanism is not
-explained here.
-
-Reproduce the analysis from the shipped tables:
-
-```bash
-la audit   run_gsm8k_numeric/scores.csv
-la audit   run_gsm8k_judge/scores.csv
-la compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv
-la compare run_gsm8k_numeric/scores.csv run_j_gemini-2.5-flash-lite/scores.csv
-la compare run_gsm8k_numeric/scores.csv run_j_claude-3-haiku/scores.csv
-```
+</details>
 
 ---
 
-## Four commands
+## Use it
 
 ```
 la estimate --items q.jsonl --systems a,b,c --scorer judge:m   # cost, no calls
@@ -142,141 +85,102 @@ la compare  truth.csv judge.csv                                # grader bias
 cell, and a loop that works perfectly and bills all night is the failure mode
 that matters.
 
----
+**`audit`** reports how many tiers the data separates (pairwise family
+Holm-corrected — for 31 systems that is 465 tests, about 23 of which come back
+significant on pure noise uncorrected), each system's bootstrap rank interval,
+the split of variance into item / system / repeat-run, the smallest difference
+the table could resolve, and which pairs more items would fix versus which are
+simply tied. Items are the resampling unit, so every replicate stays a complete
+table and pairing holds.
 
-## What the audit reports
-
-**Tiers.** How many groups the data can actually separate, against the pairwise
-family Holm-corrected. For 31 systems that family is 465 tests; uncorrected,
-about 23 come back significant on pure noise.
-
-**Rank intervals.** Items are resampled, keeping every replicate a complete
-table, so an item that is hard for everyone stays hard for everyone. A system
-whose rank swings from 3rd to 19th does not have a rank, it has a range.
-
-**Where the variance comes from.** Item difficulty inflates raw spread but
-cancels under pairing, so it costs nothing — mistaking it for noise is how
-people conclude a benchmark is hopeless when it is fine. Repeat-run variance is
-what actually sets the floor, and it is invisible without repeat runs.
-
-**What to change.** Separating underpowered pairs, which more items would fix,
-from genuinely tied ones, which no item count will.
-
-**The design floor.** Every test reports the smallest p-value it could have
-reached. With 5 paired items that floor is 0.0625 — such a comparison cannot
-come out significant whatever the systems do.
-
-**Non-transitivity**, reported rather than hidden. "Not distinguishable" is not
-transitive, so `tiers` gives the readable partition, `homogeneous_subsets` the
-stricter overlapping view, and `nontransitive_pairs` the orderings the
-significance pattern cannot support.
+**`compare`** takes two graders over the same answers and reports per-system
+bias, paired over items and Holm-corrected, plus what it does to the ordering.
 
 ---
 
-## What makes it survive a real run
+## Built for runs that cost money
 
-**Everything is cached, keyed by content** — model, messages, temperature, max
-tokens and the repeat index. In the run above, all 3,600 gradings reused cached
-answers: not one answer was regenerated. A run killed at cell 400 of 600
-resumes by replaying 400 hits.
+Every call is **cached by content**, including the repeat index — in the run
+above all 3,600 gradings reused cached answers and not one answer was
+regenerated. A run killed at cell 400 of 600 resumes by replaying 400 hits.
 
-**A published run replays offline.** Ship the cache with the results and
-`--offline` re-executes the identical pipeline with no key and no network —
-verified here to reproduce the live run cell for cell. A cache miss raises
+A published run **replays offline**: ship the cache and `--offline` reproduces
+it with no key and no network, verified here cell for cell. A cache miss raises
 instead of quietly going online, so a reproduction cannot silently become a
 fresh paid run.
 
-**The budget is checked before each call**, priced from the provider's live
-model list rather than a hardcoded table that goes stale in the direction
-nobody notices until the bill.
-
-**Failures are recorded, not dropped.** Errored cells go to `errors.jsonl` and
-are excluded with a count; silently dropping them would bias results toward
-whichever systems fail least on hard items — exactly the items that separate
-systems. A grade that does not parse is scored 0 and flagged, never discarded.
-
-**Work is ordered item-major**, so an interrupted run still covers every system
-on the items it reached. A ragged table cannot be paired.
+The **budget is checked before each call**, priced from the provider's live
+model list. Errored cells are recorded and excluded with a count — dropping
+them silently would bias results toward whichever systems fail least on hard
+items. A grade that does not parse is scored 0 and flagged, never discarded.
+Work is ordered item-major, so an interrupted run still pairs.
 
 ---
 
-## Input
+## Reproduce
 
-Items as JSONL or CSV, or `hf:<dataset>` for the Hugging Face hub:
+The run tables are in the repository, so the analysis needs no API key:
+
+```bash
+la audit   run_gsm8k_numeric/scores.csv
+la compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv
+la compare run_gsm8k_numeric/scores.csv run_j_gemini-2.5-flash-lite/scores.csv
+la compare run_gsm8k_numeric/scores.csv run_j_claude-3-haiku/scores.csv
+python figures/make_figures.py
+```
+
+Tests: `python tests/test_stats.py`, `test_audit.py`, `test_system.py`,
+`test_compare.py` — 109 in all, none touching the network.
+
+<details>
+<summary>Input formats and one measurement trap</summary>
+
+Items as JSONL or CSV, or `hf:<dataset>`:
 
 ```json
 {"id": "q001", "question": "What is 17 * 23?", "answer": "391"}
 ```
 
 Field names are given with `--prompt-field` / `--reference-field` rather than
-guessed, because guessing column names is how a harness silently evaluates the
-wrong field.
+guessed. Or audit a table you already have: `system,item,run,score`. A
+published leaderboard is wide — one row per system, one aggregate number — and
+that shape has already discarded everything needed to say whether the ordering
+means anything.
 
-Or audit a table you already have:
+The trap: the default system prompt tells the model to answer directly, which
+suppresses step-by-step reasoning. On GSM8K that cost about 40 points before
+`--system-prompt` existed. Set it deliberately.
 
-```csv
-system,item,run,score
-gpt-x,task_001,1,0.81
-gpt-x,task_001,2,0.74
+</details>
+
+<details>
+<summary>Layout</summary>
+
+```
+src/la/
+  cli.py         estimate / run / audit / compare
+  tasks.py       item loading: JSONL, CSV, Hugging Face
+  providers.py   OpenRouter, offline replay, simulator
+  judge.py       exact, contains, numeric, model judge, judge panel
+  run.py         the measurement loop: resumable, bounded, item-major
+  cache.py       content-addressed cache, atomic writes
+  budget.py      spend accounting and the hard stop
+  data.py        long-table loading, missing cells, repeat runs
+  ranks.py       bootstrap rank intervals, pairwise family, tiers
+  variance.py    item / system / repeat-run split, noise floor
+  compare.py     per-system grader bias and what it does to the ordering
+  stats/         exact Wilcoxon and sign test, Holm, bootstrap, power,
+                 inverse normal CDF — so scipy is not needed
+figures/         the two figures above, light and dark, plus their data
 ```
 
-A published leaderboard is wide — one row per system, one aggregate number —
-and that shape has already discarded everything needed to say whether the
-ordering means anything. **If only the wide table exists, the audit cannot be
-run**, which is itself worth reporting.
-
-One measurement note found the hard way: the default system prompt tells the
-model to answer directly, which suppresses step-by-step reasoning. On GSM8K
-that cost about 40 points before `--system-prompt` existed. Set it
-deliberately.
-
----
+</details>
 
 ## What it does not do
 
 It does not say whether a benchmark measures anything worth measuring, or
-whether scores transfer to deployment.
-
-It can say whether a grader is *wrong*, but only against a grader you trust
-more — that is what `la compare` is. Without a reference it measures
-*consistency*, not correctness, and the result above is the reason those are
-not the same question.
-
----
-
-## Layout
-
-```
-src/la/
-  cli.py           estimate / run / audit / compare
-  tasks.py         item loading: JSONL, CSV, Hugging Face
-  providers.py     OpenRouter, offline replay, simulator
-  judge.py         exact, contains, numeric, model judge, judge panel
-  run.py           the measurement loop: resumable, bounded, item-major
-  cache.py         content-addressed cache, atomic writes
-  budget.py        spend accounting and the hard stop
-  env.py           .env loading; names only, never values
-  data.py          long-table loading, missing cells, repeat runs
-  ranks.py         bootstrap rank intervals, pairwise family, tiers
-  variance.py      item / system / repeat-run split, noise floor
-  compare.py       per-system grader bias and what it does to the ordering
-  report.py        headline, tables, figure, recommendations
-  stats/
-    exact.py       exact Wilcoxon and sign test, Holm, bootstrap, Cliff's delta
-    power.py       minimum detectable effect, required items, achieved power
-    normal.py      inverse normal CDF (Acklam), so scipy is not needed
-examples/
-  gsm8k_test.jsonl     1,319 real items with ground truth
-  arithmetic.jsonl     40 quick items
-  make_example.py      synthetic table with a known number of true levels
-tests/                 109 tests, none touching the network
-```
-
-`run/run_summary.json` records config, cell counts, errors, unparsed grades,
-cache hit rate and spend. `results/manifest.json` records input shape, alpha,
-bootstrap count, seed, items used and dropped, noise floor, and tool, Python,
-numpy and platform versions.
-
-## License
+whether scores transfer to deployment. It can say a grader is *wrong*, but only
+against a grader you trust more. Without one it measures *consistency*, not
+correctness — and the result above is why those are not the same question.
 
 Apache-2.0.

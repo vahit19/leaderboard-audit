@@ -1,0 +1,96 @@
+{
+  "bias_by_judge": {
+    "claude-3-haiku": {
+      "gpt-4.1-nano": 0.065,
+      "gpt-4o-mini": 0.055,
+      "llama-3.1-8b": 0.135,
+      "llama-3.3-70b": 0.045,
+      "ministral-8b": 0.065,
+      "qwen-2.5-7b": 0.1
+    },
+    "gemini-2.5-flash-lite": {
+      "gpt-4.1-nano": 0.0,
+      "gpt-4o-mini": 0.0,
+      "llama-3.1-8b": 0.015,
+      "llama-3.3-70b": -0.01,
+      "ministral-8b": 0.005,
+      "qwen-2.5-7b": 0.025
+    },
+    "gpt-4o-mini": {
+      "gpt-4.1-nano": -0.0201,
+      "gpt-4o-mini": 0.0,
+      "llama-3.1-8b": -0.005,
+      "llama-3.3-70b": -0.06,
+      "ministral-8b": 0.0,
+      "qwen-2.5-7b": 0.045
+    }
+  },
+  "rank_by_grader": {
+    "claude-3-haiku": {
+      "gpt-4.1-nano": 3,
+      "gpt-4o-mini": 1,
+      "llama-3.1-8b": 6,
+      "llama-3.3-70b": 4,
+      "ministral-8b": 2,
+      "qwen-2.5-7b": 5
+    },
+    "gemini-2.5-flash-lite": {
+      "gpt-4.1-nano": 4,
+      "gpt-4o-mini": 1,
+      "llama-3.1-8b": 6,
+      "llama-3.3-70b": 2,
+      "ministral-8b": 3,
+      "qwen-2.5-7b": 5
+    },
+    "gpt-4o-mini": {
+      "gpt-4.1-nano": 4,
+      "gpt-4o-mini": 1,
+      "llama-3.1-8b": 6,
+      "llama-3.3-70b": 5,
+      "ministral-8b": 3,
+      "qwen-2.5-7b": 2
+    },
+    "ground truth": {
+      "gpt-4.1-nano": 4,
+      "gpt-4o-mini": 2,
+      "llama-3.1-8b": 6,
+      "llama-3.3-70b": 1,
+      "ministral-8b": 3,
+      "qwen-2.5-7b": 5
+    }
+  },
+  "score_by_grader": {
+    "claude-3-haiku": {
+      "gpt-4.1-nano": 1.0,
+      "gpt-4o-mini": 1.0,
+      "llama-3.1-8b": 0.975,
+      "llama-3.3-70b": 0.995,
+      "ministral-8b": 1.0,
+      "qwen-2.5-7b": 0.995
+    },
+    "gemini-2.5-flash-lite": {
+      "gpt-4.1-nano": 0.935,
+      "gpt-4o-mini": 0.945,
+      "llama-3.1-8b": 0.855,
+      "llama-3.3-70b": 0.94,
+      "ministral-8b": 0.94,
+      "qwen-2.5-7b": 0.92
+    },
+    "gpt-4o-mini": {
+      "gpt-4.1-nano": 0.9146,
+      "gpt-4o-mini": 0.945,
+      "llama-3.1-8b": 0.835,
+      "llama-3.3-70b": 0.89,
+      "ministral-8b": 0.935,
+      "qwen-2.5-7b": 0.94
+    },
+    "ground truth": {
+      "gpt-4.1-nano": 0.935,
+      "gpt-4o-mini": 0.945,
+      "llama-3.1-8b": 0.84,
+      "llama-3.3-70b": 0.95,
+      "ministral-8b": 0.935,
+      "qwen-2.5-7b": 0.895
+    }
+  }
+}
