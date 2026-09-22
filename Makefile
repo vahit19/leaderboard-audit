@@ -4,7 +4,7 @@ PY ?= python
 
 help:
 	@echo "make demo     full pipeline offline: measure 12 systems, then audit"
-	@echo "make test     run the test suite (122 tests, pytest optional)"
+	@echo "make test     run the test suite (124 tests, pytest optional)"
 	@echo "make example  regenerate examples/example.csv only"
 	@echo "make figures  rebuild the README figures, light and dark"
 	@echo "make clean    remove generated results and run directories"

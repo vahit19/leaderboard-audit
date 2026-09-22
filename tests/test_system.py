@@ -476,6 +476,40 @@ def test_long_csv_can_drop_unparsed_grades_and_reports_how_many():
         assert (written, skipped) == (1, 1)
 
 
+# -- packaging ---------------------------------------------------------------
+
+def test_no_root_script_shadows_a_package():
+    """A file at the repository root must not answer to a package's name.
+
+    A launcher called la.py shadowed the la package for anything run from the
+    root: `python -m la.cli` resolved la to the launcher, which is a module and
+    not a package, and the quickstart died. Local runs of the launcher itself
+    still worked, so the failure only surfaced in CI. This closes the class.
+    """
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    packages = {name for name in os.listdir(os.path.join(root, "src"))
+                if os.path.isdir(os.path.join(root, "src", name))
+                and not name.startswith((".", "_"))}
+    scripts = {f[:-3] for f in os.listdir(root) if f.endswith(".py")}
+    collisions = packages & scripts
+    assert not collisions, (
+        "root script(s) %s shadow the package(s) of the same name; anything "
+        "run from the repository root will import the script instead"
+        % sorted(collisions)
+    )
+
+
+def test_module_entry_point_runs_from_the_repository_root():
+    """`python -m la.cli --version` must work with the root as cwd."""
+    import subprocess
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    env = dict(os.environ)
+    env["PYTHONPATH"] = os.path.join(root, "src") + os.pathsep + env.get("PYTHONPATH", "")
+    result = subprocess.run([sys.executable, "-m", "la.cli", "--version"],
+                            cwd=root, env=env, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr[-400:]
+
+
 # -- tasks and env ----------------------------------------------------------
 
 def test_jsonl_loader_reports_a_missing_field_with_the_available_ones():

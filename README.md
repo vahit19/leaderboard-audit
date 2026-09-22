@@ -88,7 +88,7 @@ la compare  truth.csv judge.csv                                # grader bias
 ```
 
 `pip install -e .` puts `la` on your path. Without installing anything,
-`python la.py` takes the same arguments — that is the form used below, so the
+`python la_cli.py` takes the same arguments — that is the form used below, so the
 commands work on a bare clone.
 
 `run` refuses to start without `--budget`. The loop calls a paid API once per
@@ -132,17 +132,17 @@ Work is ordered item-major, so an interrupted run still pairs.
 The run tables are in the repository, so the analysis needs no API key:
 
 ```bash
-python la.py audit   run_gsm8k_numeric/scores.csv
-python la.py compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv
-python la.py compare run_gsm8k_numeric/scores.csv run_j_gemini-2.5-flash-lite/scores.csv
-python la.py compare run_gsm8k_numeric/scores.csv run_j_claude-3-haiku/scores.csv
+python la_cli.py audit   run_gsm8k_numeric/scores.csv
+python la_cli.py compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv
+python la_cli.py compare run_gsm8k_numeric/scores.csv run_j_gemini-2.5-flash-lite/scores.csv
+python la_cli.py compare run_gsm8k_numeric/scores.csv run_j_claude-3-haiku/scores.csv
 python figures/make_figures.py                       # needs matplotlib
 ```
 
 `python tests/test_published.py` re-derives every number on this page from
 those tables, so the claims here are checked rather than asserted. With
 `test_stats.py`, `test_audit.py`, `test_system.py` and `test_compare.py` that
-is 122 tests, none touching the network, all run by CI on Linux and Windows
+is 124 tests, none touching the network, all run by CI on Linux and Windows
 against Python 3.9 and 3.12 — including the quickstart above, exactly as
 printed.
 

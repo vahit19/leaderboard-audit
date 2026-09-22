@@ -52,8 +52,8 @@ jobs:
 
       - name: README reproduce commands work with nothing installed
         run: |
-          python la.py audit run_gsm8k_numeric/scores.csv --out /tmp/a1 --quiet
-          python la.py compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv --out /tmp/a2 --quiet
+          python la_cli.py audit run_gsm8k_numeric/scores.csv --out /tmp/a1 --quiet
+          python la_cli.py compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv --out /tmp/a2 --quiet
         shell: bash
 
       # Both console scripts, because the README promises `la` and the package
