@@ -1,5 +1,7 @@
 # leaderboard-audit
 
+[![ci](https://github.com/vahit19/leaderboard-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/vahit19/leaderboard-audit/actions/workflows/ci.yml)
+
 **Your eval says the new model is better. Can it tell?**
 
 Six models. 200 GSM8K problems. Every answer graded four ways — once against
@@ -12,11 +14,15 @@ that ranks 1st ranks 5th, depending only on who grades.
 </picture>
 
 ```
+git clone https://github.com/vahit19/leaderboard-audit && cd leaderboard-audit
+pip install numpy
 python demo.py     # full pipeline offline: no key, no spend
 ```
 
 `numpy` is the only requirement for everything but a live run. Every
-statistical test is implemented here and checked against hand-computed values.
+statistical test is implemented here and checked against hand-computed values —
+including the ones quoted on this page, which CI re-derives from the shipped
+tables on every push.
 
 ---
 
@@ -81,6 +87,9 @@ la audit    run/scores.csv                                     # what holds up
 la compare  truth.csv judge.csv                                # grader bias
 ```
 
+`pip install -e .` gives you `la`. Without installing anything, `python la.py`
+takes the same arguments.
+
 `run` refuses to start without `--budget`. The loop calls a paid API once per
 cell, and a loop that works perfectly and bills all night is the failure mode
 that matters.
@@ -122,15 +131,19 @@ Work is ordered item-major, so an interrupted run still pairs.
 The run tables are in the repository, so the analysis needs no API key:
 
 ```bash
-la audit   run_gsm8k_numeric/scores.csv
-la compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv
-la compare run_gsm8k_numeric/scores.csv run_j_gemini-2.5-flash-lite/scores.csv
-la compare run_gsm8k_numeric/scores.csv run_j_claude-3-haiku/scores.csv
-python figures/make_figures.py
+python la.py audit   run_gsm8k_numeric/scores.csv
+python la.py compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv
+python la.py compare run_gsm8k_numeric/scores.csv run_j_gemini-2.5-flash-lite/scores.csv
+python la.py compare run_gsm8k_numeric/scores.csv run_j_claude-3-haiku/scores.csv
+python figures/make_figures.py                       # needs matplotlib
 ```
 
-Tests: `python tests/test_stats.py`, `test_audit.py`, `test_system.py`,
-`test_compare.py` — 109 in all, none touching the network.
+`python tests/test_published.py` re-derives every number on this page from
+those tables, so the claims here are checked rather than asserted. With
+`test_stats.py`, `test_audit.py`, `test_system.py` and `test_compare.py` that
+is 122 tests, none touching the network, all run by CI on Linux and Windows
+against Python 3.9 and 3.12 — including the quickstart above, exactly as
+printed.
 
 <details>
 <summary>Input formats and one measurement trap</summary>
