@@ -24,8 +24,8 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from .providers import Provider
 
-__all__ = ["Score", "Scorer", "ExactMatch", "Contains", "ModelJudge",
-           "JudgePanel", "DEFAULT_RUBRIC"]
+__all__ = ["Score", "Scorer", "ExactMatch", "Contains", "NumericMatch",
+           "ModelJudge", "JudgePanel", "DEFAULT_RUBRIC", "build_scorer"]
 
 
 class Score:
@@ -102,6 +102,56 @@ class Contains(Scorer):
         haystack = answer if self.case_sensitive else answer.lower()
         needle = reference if self.case_sensitive else reference.lower()
         return Score(float(needle.strip() in haystack), self.name)
+
+
+_NUMBER = re.compile(r"-?\d[\d,]*\.?\d*")
+
+
+class NumericMatch(Scorer):
+    """Compare the last number in the answer to the reference number.
+
+    The convention used for grade-school math benchmarks: a model that reasons
+    aloud states its result last, so the final number is the answer. Commas,
+    currency symbols and trailing full stops are stripped, and a tolerance
+    handles the float formatting differences that would otherwise fail a
+    correct answer.
+
+    Deterministic, so it contributes no grading variance. That makes it the
+    control: run the same items through this and through a model judge, and
+    the difference between the two variance decompositions is what the judge
+    is adding.
+    """
+
+    name = "numeric_match"
+
+    def __init__(self, tolerance: float = 1e-6):
+        self.tolerance = float(tolerance)
+
+    @staticmethod
+    def extract(text: str) -> Optional[float]:
+        matches = _NUMBER.findall(text.replace("$", "").replace("%", ""))
+        if not matches:
+            return None
+        for candidate in reversed(matches):
+            cleaned = candidate.replace(",", "").rstrip(".")
+            try:
+                return float(cleaned)
+            except ValueError:
+                continue
+        return None
+
+    def score(self, prompt, answer, reference, sample=0) -> Score:
+        if reference is None:
+            raise ValueError("NumericMatch needs a reference answer")
+        target = self.extract(reference)
+        got = self.extract(answer)
+        if target is None:
+            raise ValueError("reference %r contains no number" % reference)
+        if got is None:
+            # No number at all is a wrong answer, and a flagged one: a model
+            # that stops answering numerically is a finding, not a blank.
+            return Score(0.0, self.name, raw=answer[:200], parsed=False)
+        return Score(float(abs(got - target) <= self.tolerance), self.name)
 
 
 # ---------------------------------------------------------------------------
@@ -229,17 +279,21 @@ def build_scorer(spec: str, provider: Optional[Provider] = None,
 
         exact                       -> ExactMatch
         contains                    -> Contains
+        numeric                     -> NumericMatch
         judge:openai/gpt-4o-mini    -> ModelJudge on that model
     """
     if spec == "exact":
         return ExactMatch()
     if spec == "contains":
         return Contains()
+    if spec == "numeric":
+        return NumericMatch()
     if spec.startswith("judge:"):
         if provider is None:
             raise ValueError("a model judge needs a provider")
         return ModelJudge(provider, spec[len("judge:"):],
                           temperature=temperature)
     raise ValueError(
-        "unknown scorer %r. Use 'exact', 'contains', or 'judge:<model>'." % spec
+        "unknown scorer %r. Use 'exact', 'contains', 'numeric', or "
+        "'judge:<model>'." % spec
     )

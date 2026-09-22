@@ -14,3 +14,6 @@ results_live/
 .cache/
 .cache_demo/
 *.jsonl.bak
+run_smoke/
+run_smoke2/
+run_gsm8k*/

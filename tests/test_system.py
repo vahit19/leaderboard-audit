@@ -21,7 +21,7 @@ from la.budget import Budget, BudgetExceeded, Price, estimate_tokens  # noqa: E4
 from la.cache import CallKey, DiskCache  # noqa: E402
 from la.env import load_dotenv, loaded_keys  # noqa: E402
 from la.judge import (Contains, ExactMatch, JudgePanel, ModelJudge,  # noqa: E402
-                      build_scorer)
+                      NumericMatch, build_scorer)
 from la.providers import (Completion, OpenRouterProvider,  # noqa: E402
                           ProviderError, ReplayProvider, StubProvider)
 from la.run import (RunConfig, load_results, run_evaluation,  # noqa: E402
@@ -236,8 +236,53 @@ def test_contains_finds_the_reference_inside_a_sentence():
     assert scorer.score("q", "I think it is 41.", "42").value == 0.0
 
 
+def test_numeric_match_reads_the_last_number_after_reasoning():
+    """Models that reason aloud state the result last; the scorer must take
+    that one, not the first number it sees in the working."""
+    scorer = NumericMatch()
+    reasoning = ("She starts with 16 eggs, eats 3, bakes with 4, so 16-3-4=9 "
+                 "left. At $2 each that is 18.")
+    assert scorer.score("q", reasoning, "18").value == 1.0
+    assert scorer.score("q", reasoning, "9").value == 0.0
+
+
+def test_numeric_match_strips_formatting_models_actually_produce():
+    scorer = NumericMatch()
+    for answer in ("The answer is 1,250.", "$1250", "1250.0", "**1250**"):
+        assert scorer.score("q", answer, "1250").value == 1.0, answer
+
+
+def test_numeric_match_handles_latex_style_output():
+    scorer = NumericMatch()
+    latex = r"\[ 	ext{Total} = 2 + 1 = 3 	ext{ bolts} \] Thus: 3"
+    assert scorer.score("q", latex, "3").value == 1.0
+
+
+def test_numeric_match_flags_an_answer_with_no_number():
+    scorer = NumericMatch()
+    result = scorer.score("q", "I cannot determine this.", "42")
+    assert result.value == 0.0
+    assert result.parsed is False
+
+
+def test_numeric_match_rejects_a_reference_without_a_number():
+    try:
+        NumericMatch().score("q", "5", "five")
+    except ValueError as exc:
+        assert "no number" in str(exc)
+        return
+    raise AssertionError("a non-numeric reference should raise")
+
+
+def test_numeric_match_is_deterministic_across_samples():
+    scorer = NumericMatch()
+    values = {scorer.score("q", "the answer is 7", "7", sample=s).value
+              for s in range(5)}
+    assert values == {1.0}
+
+
 def test_deterministic_scorers_need_a_reference():
-    for scorer in (ExactMatch(), Contains()):
+    for scorer in (ExactMatch(), Contains(), NumericMatch()):
         try:
             scorer.score("q", "a", None)
         except ValueError:

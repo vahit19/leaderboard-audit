@@ -30,7 +30,8 @@ from .ranks import (homogeneous_subsets, pairwise_comparisons, rank_intervals,
                     tiers)
 from .report import (headline, plot_tiers, recommendations, render_table,
                      write_json)
-from .run import (RunConfig, console_progress, run_evaluation, write_long_csv)
+from .run import (DEFAULT_SYSTEM_PROMPT, RunConfig, console_progress,
+                  run_evaluation, write_long_csv)
 from .tasks import load_csv_items, load_hf, load_jsonl
 from .variance import noise_floor, variance_components
 
@@ -79,7 +80,7 @@ def _add_run(p: argparse.ArgumentParser) -> None:
     p.add_argument("--split", default="test", help="hf: split")
 
     p.add_argument("--scorer", default="exact",
-                   help="exact | contains | judge:<model>")
+                   help="exact | contains | numeric | judge:<model>")
     p.add_argument("--panel", default=None,
                    help="comma-separated judge models; grades are the panel "
                         "mean and every judge's grade is kept")
@@ -91,12 +92,21 @@ def _add_run(p: argparse.ArgumentParser) -> None:
                    help="gradings per answer; this is what measures the judge")
     p.add_argument("--temperature", type=float, default=0.0)
     p.add_argument("--max-tokens", type=int, default=512)
+    p.add_argument("--system-prompt", default=None,
+                   help="instruction sent with every item. The default tells "
+                        "the model to answer directly, which suppresses "
+                        "step-by-step reasoning and depresses scores on tasks "
+                        "that need it -- set it deliberately.")
 
     p.add_argument("--budget", type=float, default=None,
                    help="hard spend ceiling in USD; required for a live run")
     p.add_argument("--concurrency", type=int, default=4)
     p.add_argument("--out", default="run")
     p.add_argument("--cache", default=".cache")
+    p.add_argument("--env-file", default=None,
+                   help="path to a .env holding the API key, when it does not "
+                        "live at the repository root. Read into the process "
+                        "environment only; never copied into any artefact.")
     p.add_argument("--no-resume", action="store_true")
     p.add_argument("--offline", action="store_true",
                    help="replay from cache only; no key, no network, no spend")
@@ -159,7 +169,7 @@ def _build_provider(args, budget: Budget):
 
 
 def cmd_run(args, dry: bool) -> int:
-    load_dotenv()
+    load_dotenv(args.env_file)
     items = _load_items(args)
     systems = [s.strip() for s in args.systems.split(",") if s.strip()]
     if len(systems) < 2:
@@ -194,6 +204,9 @@ def cmd_run(args, dry: bool) -> int:
             answer_repeats=args.answer_repeats,
             grade_repeats=args.grade_repeats,
             temperature=args.temperature, max_tokens=args.max_tokens,
+            system_prompt=(args.system_prompt
+                           if args.system_prompt is not None
+                           else DEFAULT_SYSTEM_PROMPT),
             concurrency=args.concurrency, out_dir=args.out,
         )
     except ValueError as exc:
