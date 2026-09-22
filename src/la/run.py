@@ -287,6 +287,13 @@ def _one_cell(config: RunConfig, provider: Provider, system: str, item: Item,
         item.prompt, completion.text, item.reference, sample=grade_rep,
     )
 
+    # A cached answer was paid for by an earlier run, so it bills nothing now.
+    # Both numbers are kept: `cost_usd` sums to what this run actually spent,
+    # `cell_cost_usd` to what producing the cell cost the first time. Reporting
+    # only the second would make a resumed run look as expensive as the
+    # original, which is the opposite of the truth.
+    billed_answer = 0.0 if completion.cached else completion.cost_usd
+
     return {
         "cell": cell,
         "system": system,
@@ -300,7 +307,8 @@ def _one_cell(config: RunConfig, provider: Provider, system: str, item: Item,
         "answer_cached": completion.cached,
         "prompt_tokens": completion.prompt_tokens,
         "completion_tokens": completion.completion_tokens,
-        "cost_usd": round(completion.cost_usd + score.cost_usd, 6),
+        "cost_usd": round(billed_answer + score.cost_usd, 6),
+        "cell_cost_usd": round(completion.cost_usd + score.cost_usd, 6),
         "metadata": item.metadata,
     }
 

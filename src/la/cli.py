@@ -21,6 +21,7 @@ import numpy as np
 from . import __version__
 from .budget import Budget, estimate_tokens
 from .cache import DiskCache
+from .compare import compare_graders
 from .data import load_csv
 from .env import load_dotenv, loaded_keys
 from .judge import JudgePanel, build_scorer
@@ -50,6 +51,8 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="command", required=True)
 
     _add_audit(sub.add_parser("audit", help="analyse an existing table"))
+    _add_compare(sub.add_parser(
+        "compare", help="compare two graders on the same answers"))
     _add_run(sub.add_parser("run", help="run models and grade them"))
     _add_run(sub.add_parser("estimate", help="project a run's cost, spend nothing"))
     return p
@@ -63,6 +66,15 @@ def _add_audit(p: argparse.ArgumentParser) -> None:
     p.add_argument("--out", default="results")
     p.add_argument("--top", type=int, default=0,
                    help="also print the N closest pairs")
+    p.add_argument("--quiet", action="store_true")
+
+
+def _add_compare(p: argparse.ArgumentParser) -> None:
+    p.add_argument("reference", help="table from the grader you trust")
+    p.add_argument("candidate", help="table from the grader under test")
+    p.add_argument("--alpha", type=float, default=0.05)
+    p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--out", default="results")
     p.add_argument("--quiet", action="store_true")
 
 
@@ -125,6 +137,8 @@ def main(argv=None) -> int:
     args = build_parser().parse_args(argv)
     if args.command == "audit":
         return cmd_audit(args)
+    if args.command == "compare":
+        return cmd_compare(args)
     if args.command == "run":
         return cmd_run(args, dry=False)
     if args.command == "estimate":
@@ -301,6 +315,60 @@ def _estimate(config, provider, items, systems, args) -> int:
         print("  the projection above excludes them.")
     print("\n  This is an estimate from a crude token count. Run with "
           "--budget %.0f to cap the real spend." % max(1.0, total * 1.5))
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# compare
+# ---------------------------------------------------------------------------
+
+def cmd_compare(args) -> int:
+    reference = load_csv(args.reference)
+    candidate = load_csv(args.candidate)
+    result = compare_graders(reference, candidate,
+                             reference_name=reference.source or args.reference,
+                             candidate_name=candidate.source or args.candidate,
+                             alpha=args.alpha, seed=args.seed)
+    write_json(os.path.join(args.out, "grader_comparison.json"), result)
+
+    if args.quiet:
+        return 0
+
+    bar = "=" * 78
+    print("\n" + bar)
+    print("GRADER COMPARISON  |  %s  vs  %s"
+          % (result["reference_name"], result["candidate_name"]))
+    print(bar)
+    print("\n  " + result["verdict"])
+    print("\n  %d systems x %d shared answers"
+          % (result["n_systems"], result["n_items"]))
+
+    print("\nPer system (positive bias = the candidate grader is more generous)")
+    print(render_table(result["per_system"],
+                       ["system", "reference_score", "candidate_score", "bias",
+                        "ci_low", "ci_high", "too_generous", "too_harsh",
+                        "holm_p", "biased"]))
+
+    ranking = result["ranking"]
+    if ranking["n_inversions"]:
+        print("\nOrderings the two graders disagree about")
+        for inv in ranking["inversions"]:
+            print("  %s leads under the reference grader; %s leads under the "
+                  "candidate" % (inv["reference_better"],
+                                 inv["candidate_better"]))
+    else:
+        print("\nThe two graders agree on every pairwise ordering.")
+
+    if ranking["moved"]:
+        print("\nRank movement")
+        for move in sorted(ranking["moved"], key=lambda m: -abs(m["moved"])):
+            print("  %-40s %d -> %d  (%+d)"
+                  % (move["system"], move["reference_rank"],
+                     move["candidate_rank"], move["moved"]))
+
+    print("\nArtifacts in %s/" % args.out)
+    print("  " + os.path.join(args.out, "grader_comparison.json"))
+    print()
     return 0
 
 

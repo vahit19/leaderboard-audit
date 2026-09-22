@@ -1,0 +1,12 @@
+{
+  "grand_mean": 0.906756002233389,
+  "item_share": 0.8131352446449536,
+  "item_var": 0.032414913642215194,
+  "mean_repeats": 2.9958298582151794,
+  "measurable": true,
+  "note": "repeat-run noise exceeds the spread between systems (14% vs 5%). Differences in this table are mostly measurement, and ranking it more finely will not help.",
+  "residual_share": 0.14012132463857643,
+  "residual_var": 0.00558581203742494,
+  "system_share": 0.04674343071646999,
+  "system_var": 0.0018633853101236953
+}

@@ -1,0 +1,38 @@
+{
+  "alpha": 0.05,
+  "assignment": [
+    {
+      "score": 0.95,
+      "system": "meta-llama/llama-3.3-70b-instruct",
+      "tier": 1
+    },
+    {
+      "score": 0.945,
+      "system": "openai/gpt-4o-mini",
+      "tier": 1
+    },
+    {
+      "score": 0.935,
+      "system": "mistralai/ministral-8b-2512",
+      "tier": 1
+    },
+    {
+      "score": 0.935,
+      "system": "openai/gpt-4.1-nano",
+      "tier": 1
+    },
+    {
+      "score": 0.895,
+      "system": "qwen/qwen-2.5-7b-instruct",
+      "tier": 1
+    },
+    {
+      "score": 0.84,
+      "system": "meta-llama/llama-3.1-8b-instruct",
+      "tier": 2
+    }
+  ],
+  "n_systems": 6,
+  "n_tiers": 2,
+  "nontransitive": []
+}

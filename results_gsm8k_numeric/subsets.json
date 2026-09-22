@@ -1,0 +1,13 @@
+[
+  [
+    "meta-llama/llama-3.3-70b-instruct",
+    "openai/gpt-4o-mini",
+    "mistralai/ministral-8b-2512",
+    "openai/gpt-4.1-nano",
+    "qwen/qwen-2.5-7b-instruct"
+  ],
+  [
+    "qwen/qwen-2.5-7b-instruct",
+    "meta-llama/llama-3.1-8b-instruct"
+  ]
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "best_seen": 1,
+    "rank": 1,
+    "rank_high": 4,
+    "rank_low": 1,
+    "rank_span": 4,
+    "score": 0.9430485762144053,
+    "system": "openai/gpt-4o-mini",
+    "worst_seen": 5
+  },
+  {
+    "best_seen": 1,
+    "rank": 2,
+    "rank_high": 4,
+    "rank_low": 1,
+    "rank_span": 4,
+    "score": 0.9363484087102176,
+    "system": "qwen/qwen-2.5-7b-instruct",
+    "worst_seen": 5
+  },
+  {
+    "best_seen": 1,
+    "rank": 3,
+    "rank_high": 5,
+    "rank_low": 1,
+    "rank_span": 5,
+    "score": 0.92964824120603,
+    "system": "mistralai/ministral-8b-2512",
+    "worst_seen": 5
+  },
+  {
+    "best_seen": 1,
+    "rank": 4,
+    "rank_high": 5,
+    "rank_low": 1,
+    "rank_span": 5,
+    "score": 0.914572864321608,
+    "system": "openai/gpt-4.1-nano",
+    "worst_seen": 6
+  },
+  {
+    "best_seen": 1,
+    "rank": 5,
+    "rank_high": 5,
+    "rank_low": 3,
+    "rank_span": 3,
+    "score": 0.8894472361809045,
+    "system": "meta-llama/llama-3.3-70b-instruct",
+    "worst_seen": 6
+  },
+  {
+    "best_seen": 3,
+    "rank": 6,
+    "rank_high": 6,
+    "rank_low": 6,
+    "rank_span": 1,
+    "score": 0.8274706867671692,
+    "system": "meta-llama/llama-3.1-8b-instruct",
+    "worst_seen": 6
+  }
+]

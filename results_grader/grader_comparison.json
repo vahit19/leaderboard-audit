@@ -1,0 +1,176 @@
+{
+  "bias_spread": 0.10217755443886097,
+  "candidate_name": "scores.csv",
+  "n_items": 199,
+  "n_systems": 6,
+  "overall_agreement": 0.931323283082077,
+  "per_system": [
+    {
+      "bias": -0.06030150753768844,
+      "biased": true,
+      "candidate_score": 0.8894472361809045,
+      "ci_high": -0.026800670016750423,
+      "ci_low": -0.09547738693467336,
+      "cliffs_delta": -0.06934168329082599,
+      "comparison": "meta-llama/llama-3.3-70b-instruct",
+      "disagreement_rate": 0.07035175879396985,
+      "holm_p": 0.005126953125,
+      "method": "exact",
+      "n_pairs": 16,
+      "p_floor": 3.0517578125e-05,
+      "p_value": 0.0008544921875,
+      "reference_score": 0.949748743718593,
+      "system": "meta-llama/llama-3.3-70b-instruct",
+      "too_generous": 1,
+      "too_harsh": 13
+    },
+    {
+      "bias": -0.020100502512562814,
+      "biased": false,
+      "candidate_score": 0.914572864321608,
+      "ci_high": 0.005025125628140704,
+      "ci_low": -0.05025125628140704,
+      "cliffs_delta": -0.020100502512562814,
+      "comparison": "openai/gpt-4.1-nano",
+      "disagreement_rate": 0.04020100502512563,
+      "holm_p": 1.0,
+      "method": "exact",
+      "n_pairs": 8,
+      "p_floor": 0.0078125,
+      "p_value": 0.2890625,
+      "reference_score": 0.9346733668341709,
+      "system": "openai/gpt-4.1-nano",
+      "too_generous": 2,
+      "too_harsh": 6
+    },
+    {
+      "bias": -0.01172529313232831,
+      "biased": false,
+      "candidate_score": 0.8274706867671692,
+      "ci_high": 0.030150753768844216,
+      "ci_low": -0.053601340033500845,
+      "cliffs_delta": -0.025302391353753693,
+      "comparison": "meta-llama/llama-3.1-8b-instruct",
+      "disagreement_rate": 0.09547738693467336,
+      "holm_p": 1.0,
+      "method": "exact",
+      "n_pairs": 22,
+      "p_floor": 4.76837158203125e-07,
+      "p_value": 0.6017837524414062,
+      "reference_score": 0.8391959798994975,
+      "system": "meta-llama/llama-3.1-8b-instruct",
+      "too_generous": 9,
+      "too_harsh": 10
+    },
+    {
+      "bias": -0.005025125628140704,
+      "biased": false,
+      "candidate_score": 0.9296482412060302,
+      "ci_high": 0.028475711892797316,
+      "ci_low": -0.03852596314907873,
+      "cliffs_delta": -0.01845912981995404,
+      "comparison": "mistralai/ministral-8b-2512",
+      "disagreement_rate": 0.06030150753768844,
+      "holm_p": 1.0,
+      "method": "exact",
+      "n_pairs": 16,
+      "p_floor": 3.0517578125e-05,
+      "p_value": 0.73211669921875,
+      "reference_score": 0.9346733668341709,
+      "system": "mistralai/ministral-8b-2512",
+      "too_generous": 6,
+      "too_harsh": 6
+    },
+    {
+      "bias": -0.0016750418760469025,
+      "biased": false,
+      "candidate_score": 0.9430485762144054,
+      "ci_high": 0.03182579564489112,
+      "ci_low": -0.035175879396984924,
+      "cliffs_delta": -0.009216938966187723,
+      "comparison": "openai/gpt-4o-mini",
+      "disagreement_rate": 0.06030150753768844,
+      "holm_p": 1.0,
+      "method": "exact",
+      "n_pairs": 13,
+      "p_floor": 0.000244140625,
+      "p_value": 0.9384765625,
+      "reference_score": 0.9447236180904522,
+      "system": "openai/gpt-4o-mini",
+      "too_generous": 6,
+      "too_harsh": 6
+    },
+    {
+      "bias": 0.041876046901172526,
+      "biased": false,
+      "candidate_score": 0.9363484087102178,
+      "ci_high": 0.08207705192629815,
+      "ci_low": 0.0033500837520938015,
+      "cliffs_delta": 0.03623645867528598,
+      "comparison": "qwen/qwen-2.5-7b-instruct",
+      "disagreement_rate": 0.08542713567839195,
+      "holm_p": 0.245208740234375,
+      "method": "exact",
+      "n_pairs": 18,
+      "p_floor": 7.62939453125e-06,
+      "p_value": 0.049041748046875,
+      "reference_score": 0.8944723618090452,
+      "system": "qwen/qwen-2.5-7b-instruct",
+      "too_generous": 13,
+      "too_harsh": 4
+    }
+  ],
+  "ranking": {
+    "inversions": [
+      {
+        "candidate_better": "mistralai/ministral-8b-2512",
+        "reference_better": "meta-llama/llama-3.3-70b-instruct"
+      },
+      {
+        "candidate_better": "openai/gpt-4.1-nano",
+        "reference_better": "meta-llama/llama-3.3-70b-instruct"
+      },
+      {
+        "candidate_better": "openai/gpt-4o-mini",
+        "reference_better": "meta-llama/llama-3.3-70b-instruct"
+      },
+      {
+        "candidate_better": "qwen/qwen-2.5-7b-instruct",
+        "reference_better": "meta-llama/llama-3.3-70b-instruct"
+      },
+      {
+        "candidate_better": "qwen/qwen-2.5-7b-instruct",
+        "reference_better": "mistralai/ministral-8b-2512"
+      },
+      {
+        "candidate_better": "qwen/qwen-2.5-7b-instruct",
+        "reference_better": "openai/gpt-4.1-nano"
+      }
+    ],
+    "moved": [
+      {
+        "candidate_rank": 5,
+        "moved": 4,
+        "reference_rank": 1,
+        "system": "meta-llama/llama-3.3-70b-instruct"
+      },
+      {
+        "candidate_rank": 1,
+        "moved": -1,
+        "reference_rank": 2,
+        "system": "openai/gpt-4o-mini"
+      },
+      {
+        "candidate_rank": 2,
+        "moved": -3,
+        "reference_rank": 5,
+        "system": "qwen/qwen-2.5-7b-instruct"
+      }
+    ],
+    "n_inversions": 6,
+    "n_moved": 3,
+    "top_changed": true
+  },
+  "reference_name": "scores.csv",
+  "verdict": "overall agreement 93.1%; but the grader's error is not even across systems: it spans 10.2 points between the system it treats best and the one it treats worst; 1 system(s) show a bias that survives correction; and the two graders disagree on the order of 6 pair(s); including which system is first. On a saturated benchmark, a bias spread larger than the real gaps between systems is enough to reorder the table, and no amount of repeat grading would reveal it -- every repeat is wrong in the same direction."
+}

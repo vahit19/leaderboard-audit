@@ -1,0 +1,42 @@
+{
+  "cache": {
+    "hits": 3600,
+    "misses": 3600,
+    "writes": 3592
+  },
+  "config": {
+    "answer_repeats": 1,
+    "concurrency": 8,
+    "grade_repeats": 3,
+    "max_tokens": 640,
+    "n_items": 200,
+    "scorer": "judge:openai/gpt-4o-mini@T0.0",
+    "systems": [
+      "openai/gpt-4o-mini",
+      "meta-llama/llama-3.3-70b-instruct",
+      "openai/gpt-4.1-nano",
+      "qwen/qwen-2.5-7b-instruct",
+      "meta-llama/llama-3.1-8b-instruct",
+      "mistralai/ministral-8b-2512"
+    ],
+    "temperature": 0.0,
+    "total_cells": 3600
+  },
+  "result": {
+    "budget": {
+      "billed_calls": 3592,
+      "cached_calls": 3600,
+      "completion_tokens": 14702,
+      "limit_usd": 0.6,
+      "prompt_tokens": 1286550,
+      "spent_usd": 0.2018
+    },
+    "errors": 8,
+    "expected_cells": 3600,
+    "rows": 3592,
+    "seconds": 4135.8,
+    "stop_reason": "",
+    "stopped_early": false,
+    "unparsed_grades": 0
+  }
+}

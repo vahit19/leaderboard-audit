@@ -1,0 +1,7 @@
+{
+  "item_var": null,
+  "measurable": false,
+  "note": "every cell has a single run, so measurement noise cannot be separated from real differences. Re-run at least a subset of items twice; that subset alone fixes the residual term.",
+  "residual_var": null,
+  "system_var": null
+}

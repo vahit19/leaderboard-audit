@@ -16,4 +16,8 @@ results_live/
 *.jsonl.bak
 run_smoke/
 run_smoke2/
-run_gsm8k*/
+
+# published run tables are tracked; their raw logs and caches are not
+run_gsm8k_numeric/results.jsonl
+run_gsm8k_judge/results.jsonl
+run_gsm8k_*/errors.jsonl
