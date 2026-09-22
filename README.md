@@ -6,9 +6,12 @@ can actually support. This tool answers one question:
 **How many tiers does this leaderboard really have?**
 
 ```
-make demo     # generates an example table and audits it, ~10 seconds
-make test     # 54 tests, pytest optional
+python demo.py              # generates an example table and audits it, ~10 seconds
+python tests/test_stats.py  # 28 tests
+python tests/test_audit.py  # 26 tests
 ```
+
+(`make demo` and `make test` do the same thing where make is available.)
 
 `numpy` is the only requirement. Every statistical test is implemented here and
 checked against hand-computed values, so there is nothing to install before you
@@ -18,7 +21,7 @@ see a number.
 
 ## What it says
 
-`make demo` builds a table of 12 systems drawn from **4 true ability levels**,
+`python demo.py` builds a table of 12 systems drawn from **4 true ability levels**,
 three systems per level, identical within a level. The raw means order all 12.
 The audit reports this:
 

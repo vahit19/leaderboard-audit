@@ -8,8 +8,8 @@ help:
 	@echo "make example  regenerate examples/example.csv only"
 	@echo "make clean    remove generated results"
 
-demo: example
-	cd src && $(PY) -m la.cli ../examples/example.csv --out ../results --top 6
+demo:
+	$(PY) demo.py
 
 example:
 	$(PY) examples/make_example.py --out examples/example.csv
