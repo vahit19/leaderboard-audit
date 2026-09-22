@@ -1,22 +1,40 @@
 [
   [
-    "strong-2",
-    "strong-3",
-    "strong-1"
+    "stub/strong-2",
+    "stub/strong-3",
+    "stub/strong-1",
+    "stub/good-1",
+    "stub/good-2",
+    "stub/good-3"
   ],
   [
-    "good-2",
-    "good-1",
-    "good-3"
+    "stub/strong-1",
+    "stub/good-1",
+    "stub/good-2",
+    "stub/good-3",
+    "stub/fair-1"
   ],
   [
-    "fair-1",
-    "fair-3",
-    "fair-2"
+    "stub/good-1",
+    "stub/good-2",
+    "stub/good-3",
+    "stub/fair-1",
+    "stub/fair-3",
+    "stub/fair-2"
   ],
   [
-    "weak-1",
-    "weak-2",
-    "weak-3"
+    "stub/fair-3",
+    "stub/fair-2",
+    "stub/weak-1"
+  ],
+  [
+    "stub/fair-2",
+    "stub/weak-1",
+    "stub/weak-2"
+  ],
+  [
+    "stub/weak-1",
+    "stub/weak-2",
+    "stub/weak-3"
   ]
 ]

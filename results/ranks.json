@@ -5,9 +5,9 @@
     "rank_high": 3,
     "rank_low": 1,
     "rank_span": 3,
-    "score": 0.7856972222222222,
-    "system": "strong-2",
-    "worst_seen": 3
+    "score": 0.8750000000000002,
+    "system": "stub/strong-2",
+    "worst_seen": 5
   },
   {
     "best_seen": 1,
@@ -15,9 +15,9 @@
     "rank_high": 3,
     "rank_low": 1,
     "rank_span": 3,
-    "score": 0.780177777777778,
-    "system": "strong-3",
-    "worst_seen": 3
+    "score": 0.875,
+    "system": "stub/strong-3",
+    "worst_seen": 6
   },
   {
     "best_seen": 1,
@@ -25,98 +25,98 @@
     "rank_high": 3,
     "rank_low": 1,
     "rank_span": 3,
-    "score": 0.7772505555555558,
-    "system": "strong-1",
-    "worst_seen": 3
+    "score": 0.85,
+    "system": "stub/strong-1",
+    "worst_seen": 5
   },
   {
-    "best_seen": 4,
+    "best_seen": 2,
     "rank": 4,
-    "rank_high": 6,
+    "rank_high": 8,
     "rank_low": 4,
-    "rank_span": 3,
-    "score": 0.7213422222222221,
-    "system": "good-2",
-    "worst_seen": 6
+    "rank_span": 5,
+    "score": 0.7166666666666669,
+    "system": "stub/good-1",
+    "worst_seen": 9
   },
   {
-    "best_seen": 4,
-    "rank": 5,
-    "rank_high": 6,
+    "best_seen": 1,
+    "rank": 4,
+    "rank_high": 8,
     "rank_low": 4,
-    "rank_span": 3,
-    "score": 0.7086255555555555,
-    "system": "good-1",
-    "worst_seen": 6
+    "rank_span": 5,
+    "score": 0.7166666666666669,
+    "system": "stub/good-2",
+    "worst_seen": 9
   },
   {
-    "best_seen": 4,
+    "best_seen": 1,
     "rank": 6,
-    "rank_high": 6,
+    "rank_high": 8,
     "rank_low": 4,
-    "rank_span": 3,
-    "score": 0.7034955555555558,
-    "system": "good-3",
-    "worst_seen": 6
+    "rank_span": 5,
+    "score": 0.7166666666666668,
+    "system": "stub/good-3",
+    "worst_seen": 10
   },
   {
-    "best_seen": 7,
+    "best_seen": 3,
     "rank": 7,
     "rank_high": 9,
-    "rank_low": 7,
-    "rank_span": 3,
-    "score": 0.6423777777777779,
-    "system": "fair-1",
-    "worst_seen": 9
+    "rank_low": 4,
+    "rank_span": 6,
+    "score": 0.6749999999999999,
+    "system": "stub/fair-1",
+    "worst_seen": 10
   },
   {
-    "best_seen": 7,
+    "best_seen": 4,
     "rank": 8,
     "rank_high": 9,
-    "rank_low": 7,
-    "rank_span": 3,
-    "score": 0.6319438888888891,
-    "system": "fair-3",
-    "worst_seen": 9
+    "rank_low": 5,
+    "rank_span": 5,
+    "score": 0.6250000000000001,
+    "system": "stub/fair-3",
+    "worst_seen": 11
+  },
+  {
+    "best_seen": 2,
+    "rank": 9,
+    "rank_high": 9,
+    "rank_low": 6,
+    "rank_span": 4,
+    "score": 0.6083333333333332,
+    "system": "stub/fair-2",
+    "worst_seen": 11
   },
   {
     "best_seen": 7,
-    "rank": 9,
-    "rank_high": 9,
-    "rank_low": 7,
-    "rank_span": 3,
-    "score": 0.6307611111111111,
-    "system": "fair-2",
-    "worst_seen": 9
-  },
-  {
-    "best_seen": 10,
     "rank": 10,
-    "rank_high": 12,
-    "rank_low": 10,
+    "rank_high": 11,
+    "rank_low": 9,
     "rank_span": 3,
-    "score": 0.44551444444444444,
-    "system": "weak-1",
+    "score": 0.4749999999999998,
+    "system": "stub/weak-1",
     "worst_seen": 12
   },
   {
-    "best_seen": 10,
+    "best_seen": 8,
     "rank": 11,
     "rank_high": 12,
     "rank_low": 10,
     "rank_span": 3,
-    "score": 0.4453161111111112,
-    "system": "weak-2",
+    "score": 0.4333333333333334,
+    "system": "stub/weak-2",
     "worst_seen": 12
   },
   {
     "best_seen": 10,
     "rank": 12,
     "rank_high": 12,
-    "rank_low": 10,
-    "rank_span": 3,
-    "score": 0.44356777777777784,
-    "system": "weak-3",
+    "rank_low": 11,
+    "rank_span": 2,
+    "score": 0.3416666666666667,
+    "system": "stub/weak-3",
     "worst_seen": 12
   }
 ]

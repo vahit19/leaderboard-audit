@@ -1,12 +1,12 @@
 {
-  "grand_mean": 0.6430058333333334,
-  "item_share": 0.3992486950377518,
-  "item_var": 0.01892819373630293,
+  "grand_mean": 0.6590277777777778,
+  "item_share": 0.0,
+  "item_var": 0.0,
   "mean_repeats": 3.0,
   "measurable": true,
-  "note": "repeat-run noise is 24% of variance against 36% for real system differences. Close ranks are not trustworthy; the wide gaps are.",
-  "residual_share": 0.23883615950191325,
-  "residual_var": 0.011323110518518526,
-  "system_share": 0.361915145460335,
-  "system_var": 0.0171582276273382
+  "note": "repeat-run noise exceeds the spread between systems (87% vs 13%). Differences in this table are mostly measurement, and ranking it more finely will not help.",
+  "residual_share": 0.8745657848999289,
+  "residual_var": 0.19722222222222166,
+  "system_share": 0.1254342151000711,
+  "system_var": 0.028286510942760967
 }

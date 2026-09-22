@@ -2,67 +2,67 @@
   "alpha": 0.05,
   "assignment": [
     {
-      "score": 0.7856972222222222,
-      "system": "strong-2",
+      "score": 0.8750000000000002,
+      "system": "stub/strong-2",
       "tier": 1
     },
     {
-      "score": 0.780177777777778,
-      "system": "strong-3",
+      "score": 0.875,
+      "system": "stub/strong-3",
       "tier": 1
     },
     {
-      "score": 0.7772505555555558,
-      "system": "strong-1",
+      "score": 0.85,
+      "system": "stub/strong-1",
       "tier": 1
     },
     {
-      "score": 0.7213422222222221,
-      "system": "good-2",
+      "score": 0.7166666666666669,
+      "system": "stub/good-1",
+      "tier": 1
+    },
+    {
+      "score": 0.7166666666666669,
+      "system": "stub/good-2",
+      "tier": 1
+    },
+    {
+      "score": 0.7166666666666668,
+      "system": "stub/good-3",
+      "tier": 1
+    },
+    {
+      "score": 0.6749999999999999,
+      "system": "stub/fair-1",
       "tier": 2
     },
     {
-      "score": 0.7086255555555555,
-      "system": "good-1",
+      "score": 0.6250000000000001,
+      "system": "stub/fair-3",
       "tier": 2
     },
     {
-      "score": 0.7034955555555558,
-      "system": "good-3",
+      "score": 0.6083333333333332,
+      "system": "stub/fair-2",
       "tier": 2
     },
     {
-      "score": 0.6423777777777779,
-      "system": "fair-1",
+      "score": 0.4749999999999998,
+      "system": "stub/weak-1",
       "tier": 3
     },
     {
-      "score": 0.6319438888888891,
-      "system": "fair-3",
+      "score": 0.4333333333333334,
+      "system": "stub/weak-2",
       "tier": 3
     },
     {
-      "score": 0.6307611111111111,
-      "system": "fair-2",
+      "score": 0.3416666666666667,
+      "system": "stub/weak-3",
       "tier": 3
-    },
-    {
-      "score": 0.44551444444444444,
-      "system": "weak-1",
-      "tier": 4
-    },
-    {
-      "score": 0.4453161111111112,
-      "system": "weak-2",
-      "tier": 4
-    },
-    {
-      "score": 0.44356777777777784,
-      "system": "weak-3",
-      "tier": 4
     }
   ],
   "n_systems": 12,
-  "n_tiers": 4,
+  "n_tiers": 3,
   "nontransitive": []
 }

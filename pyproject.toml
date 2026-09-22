@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "leaderboard-audit"
 version = "0.1.0"
-description = "How much of a leaderboard's ordering is supported by its own data"
+description = "Run an evaluation and audit how much of its ordering the data supports"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "Apache-2.0" }
@@ -18,7 +18,10 @@ keywords = ["evaluation", "benchmark", "leaderboard", "statistics",
 dependencies = ["numpy>=1.22"]
 
 [project.optional-dependencies]
-figures = ["matplotlib>=3.5"]
+# Offline work -- audit, replay, simulation -- needs none of these.
+live = ["requests>=2.25"]        # calling models through OpenRouter
+hub = ["datasets>=2.0"]          # loading items from the Hugging Face hub
+figures = ["matplotlib>=3.5"]    # the ranks figure; tables print without it
 
 [project.scripts]
 leaderboard-audit = "la.cli:main"

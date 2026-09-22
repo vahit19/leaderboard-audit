@@ -6,3 +6,11 @@ venv/
 *.egg-info/
 .pytest_cache/
 .DS_Store
+
+# run artefacts and caches: regenerate with `python demo.py`
+run_demo/
+run_live/
+results_live/
+.cache/
+.cache_demo/
+*.jsonl.bak

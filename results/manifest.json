@@ -2,23 +2,23 @@
   "alpha": 0.05,
   "bootstrap_replicates": 10000,
   "input": {
-    "complete_items": 60,
+    "complete_items": 40,
     "has_repeats": true,
-    "items": 60,
+    "items": 40,
     "max_repeats": 3,
     "min_repeats": 3,
     "missing_cells": 0,
-    "source": "example.csv",
+    "source": "scores.csv",
     "systems": 12
   },
   "items_dropped_incomplete": 0,
-  "items_used": 60,
-  "noise_floor": 0.031406507900466396,
+  "items_used": 40,
+  "noise_floor": 0.16053152453761316,
   "numpy": "2.0.2",
   "pairwise_tests": 66,
   "platform": "Windows-10-10.0.26100-SP0",
-  "power_target": 0.8,
   "python": "3.9.13",
   "seed": 0,
-  "wall_clock_seconds": 5.54
+  "tool_version": "0.1.0",
+  "wall_clock_seconds": 3.97
 }
