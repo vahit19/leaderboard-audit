@@ -1,0 +1,122 @@
+[
+  {
+    "best_seen": 1,
+    "rank": 1,
+    "rank_high": 3,
+    "rank_low": 1,
+    "rank_span": 3,
+    "score": 0.7856972222222222,
+    "system": "strong-2",
+    "worst_seen": 3
+  },
+  {
+    "best_seen": 1,
+    "rank": 2,
+    "rank_high": 3,
+    "rank_low": 1,
+    "rank_span": 3,
+    "score": 0.780177777777778,
+    "system": "strong-3",
+    "worst_seen": 3
+  },
+  {
+    "best_seen": 1,
+    "rank": 3,
+    "rank_high": 3,
+    "rank_low": 1,
+    "rank_span": 3,
+    "score": 0.7772505555555558,
+    "system": "strong-1",
+    "worst_seen": 3
+  },
+  {
+    "best_seen": 4,
+    "rank": 4,
+    "rank_high": 6,
+    "rank_low": 4,
+    "rank_span": 3,
+    "score": 0.7213422222222221,
+    "system": "good-2",
+    "worst_seen": 6
+  },
+  {
+    "best_seen": 4,
+    "rank": 5,
+    "rank_high": 6,
+    "rank_low": 4,
+    "rank_span": 3,
+    "score": 0.7086255555555555,
+    "system": "good-1",
+    "worst_seen": 6
+  },
+  {
+    "best_seen": 4,
+    "rank": 6,
+    "rank_high": 6,
+    "rank_low": 4,
+    "rank_span": 3,
+    "score": 0.7034955555555558,
+    "system": "good-3",
+    "worst_seen": 6
+  },
+  {
+    "best_seen": 7,
+    "rank": 7,
+    "rank_high": 9,
+    "rank_low": 7,
+    "rank_span": 3,
+    "score": 0.6423777777777779,
+    "system": "fair-1",
+    "worst_seen": 9
+  },
+  {
+    "best_seen": 7,
+    "rank": 8,
+    "rank_high": 9,
+    "rank_low": 7,
+    "rank_span": 3,
+    "score": 0.6319438888888891,
+    "system": "fair-3",
+    "worst_seen": 9
+  },
+  {
+    "best_seen": 7,
+    "rank": 9,
+    "rank_high": 9,
+    "rank_low": 7,
+    "rank_span": 3,
+    "score": 0.6307611111111111,
+    "system": "fair-2",
+    "worst_seen": 9
+  },
+  {
+    "best_seen": 10,
+    "rank": 10,
+    "rank_high": 12,
+    "rank_low": 10,
+    "rank_span": 3,
+    "score": 0.44551444444444444,
+    "system": "weak-1",
+    "worst_seen": 12
+  },
+  {
+    "best_seen": 10,
+    "rank": 11,
+    "rank_high": 12,
+    "rank_low": 10,
+    "rank_span": 3,
+    "score": 0.4453161111111112,
+    "system": "weak-2",
+    "worst_seen": 12
+  },
+  {
+    "best_seen": 10,
+    "rank": 12,
+    "rank_high": 12,
+    "rank_low": 10,
+    "rank_span": 3,
+    "score": 0.44356777777777784,
+    "system": "weak-3",
+    "worst_seen": 12
+  }
+]

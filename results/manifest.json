@@ -1,0 +1,24 @@
+{
+  "alpha": 0.05,
+  "bootstrap_replicates": 10000,
+  "input": {
+    "complete_items": 60,
+    "has_repeats": true,
+    "items": 60,
+    "max_repeats": 3,
+    "min_repeats": 3,
+    "missing_cells": 0,
+    "source": "example.csv",
+    "systems": 12
+  },
+  "items_dropped_incomplete": 0,
+  "items_used": 60,
+  "noise_floor": 0.031406507900466396,
+  "numpy": "2.0.2",
+  "pairwise_tests": 66,
+  "platform": "Windows-10-10.0.26100-SP0",
+  "power_target": 0.8,
+  "python": "3.9.13",
+  "seed": 0,
+  "wall_clock_seconds": 14.03
+}

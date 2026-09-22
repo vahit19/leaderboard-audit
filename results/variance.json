@@ -1,0 +1,12 @@
+{
+  "grand_mean": 0.6430058333333334,
+  "item_share": 0.3992486950377518,
+  "item_var": 0.01892819373630293,
+  "mean_repeats": 3.0,
+  "measurable": true,
+  "note": "repeat-run noise is 24% of variance against 36% for real system differences. Close ranks are not trustworthy; the wide gaps are.",
+  "residual_share": 0.23883615950191325,
+  "residual_var": 0.011323110518518526,
+  "system_share": 0.361915145460335,
+  "system_var": 0.0171582276273382
+}

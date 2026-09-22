@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leaderboard-audit"
+version = "0.1.0"
+description = "How much of a leaderboard's ordering is supported by its own data"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Vahit FERYAD", email = "vahit.feryat@gmail.com" }]
+keywords = ["evaluation", "benchmark", "leaderboard", "statistics",
+            "reliability", "llm-evaluation", "statistical-power"]
+
+# numpy runs the entire audit, including every statistical test. matplotlib is
+# only used for the optional figure.
+dependencies = ["numpy>=1.22"]
+
+[project.optional-dependencies]
+figures = ["matplotlib>=3.5"]
+
+[project.scripts]
+leaderboard-audit = "la.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
