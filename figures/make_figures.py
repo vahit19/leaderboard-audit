@@ -14,6 +14,7 @@ Identity is never carried by colour alone: every series is directly labelled.
 from __future__ import annotations
 
 import collections
+import csv
 import json
 import os
 import sys
@@ -32,11 +33,14 @@ SYSTEMS_ORDER = [
     "meta-llama/llama-3.1-8b-instruct",
 ]
 
+# Read from scores.csv, which is committed, rather than results.jsonl, which
+# is not: a figure the repository cannot rebuild from its own contents is a
+# picture of a result, not a reproduction of one.
 GRADERS = [
-    ("ground truth", "run_gsm8k_numeric/results.jsonl"),
-    ("gpt-4o-mini", "run_gsm8k_judge/results.jsonl"),
-    ("gemini-2.5-flash-lite", "run_j_gemini-2.5-flash-lite/results.jsonl"),
-    ("claude-3-haiku", "run_j_claude-3-haiku/results.jsonl"),
+    ("ground truth", "run_gsm8k_numeric/scores.csv"),
+    ("gpt-4o-mini", "run_gsm8k_judge/scores.csv"),
+    ("gemini-2.5-flash-lite", "run_j_gemini-2.5-flash-lite/scores.csv"),
+    ("claude-3-haiku", "run_j_claude-3-haiku/scores.csv"),
 ]
 
 THEME = {
@@ -69,12 +73,11 @@ SHORT = {
 # ---------------------------------------------------------------------------
 
 def load_scores(path: str):
-    """Mean score per (system, item), majority-thresholded for repeat grades."""
+    """Mean score per (system, item), averaging any repeat grades."""
     rows = collections.defaultdict(list)
-    with open(os.path.join(ROOT, path), encoding="utf-8") as fh:
-        for line in fh:
-            r = json.loads(line)
-            rows[(r["system"], r["item"])].append(r["score"])
+    with open(os.path.join(ROOT, path), newline="", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            rows[(r["system"], r["item"])].append(float(r["score"]))
     return {k: float(np.mean(v)) for k, v in rows.items()}
 
 
