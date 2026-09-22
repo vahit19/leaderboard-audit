@@ -87,8 +87,9 @@ la audit    run/scores.csv                                     # what holds up
 la compare  truth.csv judge.csv                                # grader bias
 ```
 
-`pip install -e .` gives you `la`. Without installing anything, `python la.py`
-takes the same arguments.
+`pip install -e .` puts `la` on your path. Without installing anything,
+`python la.py` takes the same arguments — that is the form used below, so the
+commands work on a bare clone.
 
 `run` refuses to start without `--budget`. The loop calls a paid API once per
 cell, and a loop that works perfectly and bills all night is the failure mode

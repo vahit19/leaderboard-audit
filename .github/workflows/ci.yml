@@ -56,10 +56,15 @@ jobs:
           python la.py compare run_gsm8k_numeric/scores.csv run_gsm8k_judge/scores.csv --out /tmp/a2 --quiet
         shell: bash
 
-      - name: Installed entry point works
+      # Both console scripts, because the README promises `la` and the package
+      # name promises the long form. This step is here because the short name
+      # was missing from pyproject.toml and only an install caught it.
+      - name: Installed entry points work
         run: |
           python -m pip install -e .
+          python -c "import shutil,sys; sys.exit(0 if shutil.which('la') else 'la not on PATH')"
           la audit run_gsm8k_numeric/scores.csv --out audit_out --quiet
+          leaderboard-audit audit run_gsm8k_numeric/scores.csv --out audit_out2 --quiet
         shell: bash
 
       - name: Figures rebuild

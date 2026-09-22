@@ -24,6 +24,9 @@ hub = ["datasets>=2.0"]          # loading items from the Hugging Face hub
 figures = ["matplotlib>=3.5"]    # the ranks figure; tables print without it
 
 [project.scripts]
+# Both names install. `la` is what the documentation uses; the long form
+# exists so the command is discoverable from the package name alone.
+la = "la.cli:main"
 leaderboard-audit = "la.cli:main"
 
 [tool.setuptools.packages.find]
