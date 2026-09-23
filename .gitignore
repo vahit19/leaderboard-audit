@@ -23,3 +23,11 @@ run_gsm8k_judge/results.jsonl
 run_gsm8k_*/errors.jsonl
 run_j_*/results.jsonl
 run_j_*/errors.jsonl
+
+# Personal material kept in the working copy, never published.
+# These sit beside the code and are not ignored by any rule above, so a
+# plain `git add -A` would stage and publish them.
+my_cv/
+paper/
+*.pdf
+*.docx
